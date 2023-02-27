@@ -13,7 +13,7 @@ class VacuumState(State) :
         else :
             self.cost = 0
 
-    def __eq__(self,other):
+    def __eq__(self, other):
         return self.location == other.location and self.leftClean == other.leftClean and self.rightClean == other.rightClean
 
     def __hash__(self):

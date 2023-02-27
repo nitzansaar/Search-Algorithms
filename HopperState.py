@@ -21,15 +21,16 @@ class HopperState(State) :
             self.cost = 0
 
 ## you do this.
-    def __eq__(self, other):
-        pass
+    def __eq__(self,other):
+        return self.cost == other.cost
+
 ## you do this
     def __lt__(self, other):
-        pass
+        return self.cost < other.cost
 
 ## you do this
     def __hash__(self):
-        pass
+        return hash(self.__repr__())
 
     def __repr__(self):
         return "(hopper1 %i hopper2 %i hopper3 %i)" % \
