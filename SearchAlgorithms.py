@@ -79,13 +79,14 @@ def depth_limited_search(startState, use_closed_list=True, limit=12) :
     return False
 
 ## loop that calls DLS with increasing limits until the solution is found.
+# good if you want completeness and linear memory
 def iterative_deepening_search(startState):
     limit = 1
     goalFound = False
     while not goalFound:
         goalFound = depth_limited_search(startState, True, limit)
         limit += 1
-    print(limit)
+    # print(limit)
     return goalFound
 
 
@@ -116,11 +117,12 @@ def RomaniaSLD(s) :
 
 if __name__ == "__main__" :
     #start = VacuumState('left',False,False)
-    # g = make_romania_graph()
-    # start = RomaniaState('Arad',g)
-    start = HopperState(0,0,0)
+    g = make_romania_graph()
+    start = RomaniaState('Arad',g)
+    iterative_deepening_search(start)
+    # start = HopperState(0,0,0)
     # breadth_first_search(start, True)
     # depth_first_search(start, True)
     # depth_limited_search(start, True)
-    iterative_deepening_search(start)
+    # iterative_deepening_search(start)
 

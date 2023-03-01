@@ -1,6 +1,6 @@
 ## this time around our Nodes will contain strings.
 
-class Node :
+class Node:
     ### here's how we do constructors.
     def __init__(self, val=""):
         self.value = val
@@ -13,7 +13,7 @@ class Node :
 
 ## now src and dest are going to be strings.
 class Edge:
-    def __init__(self, src, dest, val=0):
+    def __init__(self, src, dest, val=1):
         self.src = src
         self.dest = dest
         self.val = val
@@ -21,12 +21,12 @@ class Edge:
         return "(%s %s %d)" % (self.src, self.dest, self.val)
 
 class Graph :
-    def __init__(self,n_vertices=5):
+    def __init__(self,n_vertices=32):
         ## our adjacency list
         self.g = {}
 
     def add_node(self, index):
-            self.g[index] = []
+            self.g[index] = Node(index)
 
     def add_edge(self, e):
         self.g[e.src].append(e)

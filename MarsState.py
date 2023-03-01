@@ -1,4 +1,4 @@
-from Graph import Graph, Edge
+from Graph import Graph, Edge, Node
 from State import State
 
 
@@ -45,9 +45,27 @@ class MarsState(State) :
 
     ## you implement this. Open the file filename, read in each line,
     ## construct a Graph object and assign it to self.mars_graph().
-    # def read_mars_graph(self, filename):
-    #    with open(filename, "r") as file:
-
+    def read_mars_graph(self, filename):
+        graph = Graph()
+        nodes = []
+        edges = []
+        with open(filename, "r") as file:
+            for line in file:
+                node, adjacents = line.strip().split(":")
+                print("Node: " + node + " Connections: " + adjacents)
+                n = Node(node)
+                graph.add_node(n)
+                connections = adjacents.split(" ")
+                for connection in connections:
+                    edge = Edge(node, connection)
+                    edges.append(edge)
+        # print(nodes)
+        # print(edges)
+        # for n in nodes:
+        #     graph.add_node(n)
+        # for edge in edges:
+        #     graph.add_edge(edge)
+        self.mars_graph = graph
 
 if __name__=="__main__" :
     s = MarsState()
