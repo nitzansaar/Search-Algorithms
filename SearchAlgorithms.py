@@ -35,7 +35,6 @@ def depth_first_search(startState, use_closed_list=True, limit=20) :
     search_queue = deque()
     closed_list = {}
     current = 0
-
     search_queue.append(startState)
     while len(search_queue) > 0:
         next_state = search_queue.pop()
@@ -43,7 +42,7 @@ def depth_first_search(startState, use_closed_list=True, limit=20) :
             print("Goal found")
             next_state.print_solution()
             return
-        else:
+        elif next_state.cost < limit:
             successors = next_state.successors()
             current = current + 1
             if use_closed_list:
@@ -51,6 +50,7 @@ def depth_first_search(startState, use_closed_list=True, limit=20) :
                               if item not in closed_list]
                 for s in successors:
                     closed_list[s] = True
+
             search_queue.extend(successors)
 
 ## you write this.
@@ -85,6 +85,7 @@ def RomaniaSLD(s) :
 if __name__ == "__main__" :
     #start = VacuumState('left',False,False)
     g = make_romania_graph()
-    start = RomaniaState('Arad',g)
-    #start = HopperState(0,0,0)
-    breadth_first_search(start, True)
+    #start = RomaniaState('Arad',g)
+    start = HopperState(0,0,0)
+    # breadth_first_search(start, True)
+    depth_first_search(start, True)

@@ -20,15 +20,14 @@ class HopperState(State) :
         else :
             self.cost = 0
 
-## you do this.
+    # return true if states have equal costs, false otherwise
     def __eq__(self,other):
-        return self.cost == other.cost
-
-## you do this
+        return self.hopper1 == other.hopper1 and self.hopper2 == other.hopper2 and self.hopper3 == other.hopper3
+    # returns true if cost is less than other cost, false otherwise
     def __lt__(self, other):
         return self.cost < other.cost
 
-## you do this
+    # returns unique hash value for hopper state
     def __hash__(self):
         return hash(self.__repr__())
 
@@ -36,6 +35,7 @@ class HopperState(State) :
         return "(hopper1 %i hopper2 %i hopper3 %i)" % \
                (self.hopper1, self.hopper2, self.hopper3)
 
+    # make set goal state method
     def is_goal(self):
         return self.hopper1 == 4 and \
                self.hopper2 == 4 and\
@@ -51,17 +51,51 @@ class HopperState(State) :
         print("Number of states: %i" % HopperState.counter)
 
     ## you do this.
+    # maybe try to reduce this and make more concise
     def successors(self):
-        ## actions are: dump out hopper 1
+        successors = []
+        ## dump out hopper 1
+        if (self.hopper1 > 0):
+            successors.append(HopperState(0, self.hopper2, self.hopper3, self, "dump1"))
         ## dump out hopper 2
+        if (self.hopper2 > 0):
+            successors.append(HopperState(self.hopper1, 0, self.hopper3, self, "dump2"))
         ## dump out hopper 3
+        if (self.hopper3 > 0):
+            successors.append(HopperState(self.hopper1, self.hopper2, 0, self, "dump3"))
         ## fill hopper 1
+        if (self.hopper1 < 8):
+            successors.append(HopperState(8, self.hopper2, self.hopper3, self, "fill1"))
         ## fill hopper 2
+        if (self.hopper2 < 5):
+            successors.append(HopperState(self.hopper1, 5, self.hopper3, self, "fill2"))
         ## fill hopper 3
+        if (self.hopper3 < 3):
+            successors.append(HopperState(self.hopper1, self.hopper2, 3, self, "fill3"))
         ## pour from 1 to 2
-        ## pour from 1 to 2
+        if (self.hopper1 > 0 and self.hopper2 < 5):
+            amount = min(self.hopper1, 5 - self.hopper2)
+            successors.append(HopperState(self.hopper1 - amount, self.hopper2 + amount, self.hopper3, self, "pour12"))
+        ## pour from 1 to 3
+        if (self.hopper1 > 0 and self.hopper2 < 3):
+            amount = min(self.hopper1, 3 - self.hopper3)
+            successors.append(HopperState(self.hopper1 - amount, self.hopper2, self.hopper3 + amount, self, "pour13"))
         ## pour from 2 to 1
+        if (self.hopper1 < 8 and self.hopper2 > 0):
+            amount = min(self.hopper2, 8 - self.hopper1)
+            successors.append(HopperState(self.hopper1 + amount, self.hopper2 - amount, self.hopper3, self, "pour21"))
         ## pour from 2 to 3
+        if (self.hopper2 > 0 and self.hopper3 < 3):
+            amount = min(self.hopper2, 3 - self.hopper3)
+            successors.append(HopperState(self.hopper1, self.hopper2 - amount, self.hopper3 + amount, self, "pour23"))
         ## pour from 3 to 1
+        if (self.hopper1 < 8 and self.hopper3 > 0):
+            amount = min(self.hopper3, 8 - self.hopper1)
+            successors.append(HopperState(self.hopper1 + amount, self.hopper2, self.hopper3 - amount, self, "pour31"))
         ## pour from 3 to 2
-        pass
+        if (self.hopper2 < 5 and self.hopper3 > 0):
+            amount = min(self.hopper3, 5 - self.hopper2)
+            successors.append(HopperState(self.hopper1, self.hopper2 + amount, self.hopper3 - amount, self, "pour32"))
+        return successors
+
+

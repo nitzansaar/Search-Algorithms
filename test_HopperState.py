@@ -13,7 +13,7 @@ class TestHopperState(TestCase):
         state3 = HopperState(h1=1, h2=2, h3=3, prev_state=state2, prev_action="hop")
         # print(state3.cost)
         assert state1 == state0
-        assert not state3 == state1
+        assert not state2 == state1
 
     def test_lt(self):
         state1 = HopperState(h1=1, h2=2, h3=3, prev_state=None, prev_action=None)
@@ -30,4 +30,16 @@ class TestHopperState(TestCase):
         assert hash(state3) == hash(state3)
         assert hash(state1) != hash(state3)
         assert hash(state1) == hash(state2)
+
+
+class TestHopperState(TestCase):
+    def test_successors(self):
+        initial_state = HopperState(h1=1, h2=2, h3=0)
+        successors = initial_state.successors()
+        for successor in successors:
+            print(successor.prev_action)
+            print(successor.prev_state)
+            print(successor)
+
+
 
