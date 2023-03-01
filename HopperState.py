@@ -35,19 +35,18 @@ class HopperState(State) :
         return "(hopper1 %i hopper2 %i hopper3 %i)" % \
                (self.hopper1, self.hopper2, self.hopper3)
 
-    # make set goal state method
     def is_goal(self):
         return self.hopper1 == 4 and \
                self.hopper2 == 4 and\
                self.hopper3 == 0
 
     def print_solution(self):
-        ptr = self
-        print(ptr)
-        while ptr :
-            print(ptr.prev_action)
-            print(ptr.prev_state)
-            ptr = ptr.prev_state
+        # ptr = self
+        # print(ptr)
+        # while ptr :
+        #     print(ptr.prev_action)
+        #     print(ptr.prev_state)
+        #     ptr = ptr.prev_state
         print("Number of states: %i" % HopperState.counter)
 
     ## you do this.

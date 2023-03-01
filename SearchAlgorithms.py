@@ -31,7 +31,7 @@ def breadth_first_search(startState, use_closed_list=True) :
 
 
 
-def depth_first_search(startState, use_closed_list=True, limit=20) :
+def depth_first_search(startState, use_closed_list=True) :
     search_queue = deque()
     closed_list = {}
     current = 0
@@ -41,8 +41,8 @@ def depth_first_search(startState, use_closed_list=True, limit=20) :
         if next_state.is_goal():
             print("Goal found")
             next_state.print_solution()
-            return
-        elif next_state.cost < limit:
+            return True
+        else:
             successors = next_state.successors()
             current = current + 1
             if use_closed_list:
@@ -52,10 +52,42 @@ def depth_first_search(startState, use_closed_list=True, limit=20) :
                     closed_list[s] = True
 
             search_queue.extend(successors)
+    return False
 
-## you write this.
+# DFS except it only adds nodes to the queue if the cost < limit
+def depth_limited_search(startState, use_closed_list=True, limit=12) :
+    search_queue = deque()
+    closed_list = {}
+    current = 0
+    search_queue.append(startState)
+    while len(search_queue) > 0:
+        next_state = search_queue.pop()
+        if next_state.is_goal():
+            print("Goal found")
+            next_state.print_solution()
+            return True
+        elif next_state.cost < limit: #only add nodes if cost < limit
+            successors = next_state.successors()
+            current = current + 1
+            if use_closed_list:
+                successors = [item for item in successors
+                              if item not in closed_list]
+                for s in successors:
+                    closed_list[s] = True
+
+            search_queue.extend(successors)
+    return False
+
+## loop that calls DLS with increasing limits until the solution is found.
 def iterative_deepening_search(startState):
-    pass
+    limit = 1
+    goalFound = False
+    while not goalFound:
+        goalFound = depth_limited_search(startState, True, limit)
+        limit += 1
+    print(limit)
+    return goalFound
+
 
 
 def a_star(startState, heuristic_fn, use_closed_list=True) :
@@ -84,8 +116,11 @@ def RomaniaSLD(s) :
 
 if __name__ == "__main__" :
     #start = VacuumState('left',False,False)
-    g = make_romania_graph()
-    #start = RomaniaState('Arad',g)
+    # g = make_romania_graph()
+    # start = RomaniaState('Arad',g)
     start = HopperState(0,0,0)
     # breadth_first_search(start, True)
-    depth_first_search(start, True)
+    # depth_first_search(start, True)
+    # depth_limited_search(start, True)
+    iterative_deepening_search(start)
+

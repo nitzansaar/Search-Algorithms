@@ -45,8 +45,9 @@ class MarsState(State) :
 
     ## you implement this. Open the file filename, read in each line,
     ## construct a Graph object and assign it to self.mars_graph().
-    def read_mars_graph(self, filename):
-       pass
+    # def read_mars_graph(self, filename):
+    #    with open(filename, "r") as file:
+
 
 if __name__=="__main__" :
     s = MarsState()
