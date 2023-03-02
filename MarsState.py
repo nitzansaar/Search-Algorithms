@@ -38,6 +38,7 @@ class MarsState(State) :
 
     def successors(self):
         edges = self.mars_graph.get_edges(self.location)
+        # print(edges)
         return [MarsState(edge.dest, self.mars_graph, self,
                                      self.cost + edge.val)
                         for edge in edges]
@@ -52,19 +53,16 @@ class MarsState(State) :
         with open(filename, "r") as file:
             for line in file:
                 node, adjacents = line.strip().split(":")
-                print("Node: " + node + " Connections: " + adjacents)
+                #print("Node: " + node + " Adjacent to: " + adjacents)
                 n = Node(node)
-                graph.add_node(n)
-                connections = adjacents.split(" ")
+                nodes.append(n)
+                graph.add_node(node)
+                connections = adjacents.split()
                 for connection in connections:
-                    edge = Edge(node, connection)
+                    edge = Edge(n, connection)
                     edges.append(edge)
-        # print(nodes)
-        # print(edges)
-        # for n in nodes:
-        #     graph.add_node(n)
-        # for edge in edges:
-        #     graph.add_edge(edge)
+                    graph.g[node].append(edge)
+
         self.mars_graph = graph
 
 if __name__=="__main__" :

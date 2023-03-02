@@ -1,13 +1,15 @@
+import math
 from collections import deque
 from unittest import TestCase
 
 from HopperState import HopperState
+from SearchAlgorithms import depth_limited_search
 
 
 class Test(TestCase):
     def test_depth_first_search(self):
         use_closed_list = True
-        startState = HopperState(0,0,0)
+        startState = HopperState(0, 0, 0)
         limit = 20
         search_queue = deque()
         closed_list = {}
@@ -30,3 +32,25 @@ class Test(TestCase):
                         closed_list[s] = True
 
                 search_queue.extend(successors)
+
+
+class Test(TestCase):
+    def test_iterative_deepening_search(self):
+        startState = HopperState(0, 0, 0)
+        limit = 1
+        goalFound = False
+        while not goalFound:
+            goalFound = depth_limited_search(startState, True, limit)
+            limit += 1
+        print("Limit:", limit)
+        return goalFound
+
+
+class Test(TestCase):
+    def test_sld(self):
+        s1 = '1,1'
+        s2 = '3,3'
+        x1, y1 = map(int, s1.split(","))
+        x2, y2 = map(int, s2.split(","))
+        sld = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        print(sld)

@@ -21,12 +21,13 @@ class Edge:
         return "(%s %s %d)" % (self.src, self.dest, self.val)
 
 class Graph :
-    def __init__(self,n_vertices=32):
+    def __init__(self,n_vertices=5):
         ## our adjacency list
         self.g = {}
 
     def add_node(self, index):
-            self.g[index] = Node(index)
+            # self.g[index] = Node(index)
+            self.g[index] = []
 
     def add_edge(self, e):
         self.g[e.src].append(e)

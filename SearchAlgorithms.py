@@ -1,5 +1,9 @@
+
+import math
 from collections import deque
 
+from Graph import Node
+from MarsState import MarsState
 from VacuumState import VacuumState
 from RomaniaState import *
 from HopperState import *
@@ -74,7 +78,6 @@ def depth_limited_search(startState, use_closed_list=True, limit=12) :
                               if item not in closed_list]
                 for s in successors:
                     closed_list[s] = True
-
             search_queue.extend(successors)
     return False
 
@@ -89,20 +92,67 @@ def iterative_deepening_search(startState):
     # print(limit)
     return goalFound
 
-
-
-def a_star(startState, heuristic_fn, use_closed_list=True) :
+# ***how to use the heuristic func as parameter***
+def a_star(startState, heuristic_func):
     search_queue = PriorityQueue()
-    closed_list = {}
-    ## you do the rest.
+    visited_list = {}
+    search_queue.put((0, startState))
+    while not search_queue.empty():
+        cost, current_state = search_queue.get()
+        if current_state.is_goal():
+            current_state.print_solution()
+            print("Goal found")
+            return
+        else:
+            # filters out successors that have already been visited
+            successors = current_state.successors()
+            successors = [item for item in successors
+                            if item not in visited_list]
+            for s in successors:
+                    visited_list[s] = True
+            for s in successors:
+                # h_cost = heuristic_func(current_state.location, s.location)
+                # search_queue.put((cost + h_cost, s))
+                search_queue.put((cost + SLD(current_state.location, s.location), s))
+
+
+
+
+
 
 ## simulate uniform cost
+def uniform_cost_search(startState, use_visited_list=True):
+    search_queue = PriorityQueue()
+    visited_list = {}
+    search_queue.put((0, startState))
+    if use_visited_list:
+        visited_list[startState] = True
+    while not search_queue.empty():
+        cost, next_state = search_queue.get()
+        if next_state.is_goal():
+            print("Goal found")
+            next_state.print_solution()
+            return
+        else:
+            successors = next_state.successors()
+            if use_visited_list:
+                successors = [item for item in successors
+                              if item not in visited_list]
+                for s in successors:
+                    visited_list[s] = True
+            for s in successors:
+                search_queue.put((cost + s.cost, s))
+
+
 def h1(s) :
     return 0
 
 ## implement this for the Mars rover.
-def SLD(s1, s2) :
-    pass
+def SLD(self, goal) :
+    y1, x1 = map(int, self.split(","))
+    y2, x2 = map(int, goal.split(","))
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
 
 ## SLD to Bucharest
 def RomaniaSLD(s) :
@@ -117,12 +167,18 @@ def RomaniaSLD(s) :
 
 if __name__ == "__main__" :
     #start = VacuumState('left',False,False)
-    g = make_romania_graph()
-    start = RomaniaState('Arad',g)
-    iterative_deepening_search(start)
-    # start = HopperState(0,0,0)
-    # breadth_first_search(start, True)
-    # depth_first_search(start, True)
-    # depth_limited_search(start, True)
+    # g = make_romania_graph()
+    # start = RomaniaState('Arad',g)
     # iterative_deepening_search(start)
+    start = HopperState(0,0,0)
+    breadth_first_search(start, True)
+    depth_first_search(start, True)
+    depth_limited_search(start, True)
+    iterative_deepening_search(start)
+    uniform_cost_search(start, True)
+    s = MarsState()
+    s.read_mars_graph("MarsMap")
+    start = MarsState('8,8', s.mars_graph)
+    goal = MarsState('1,1', s.mars_graph)
+    a_star(start,SLD(start.location, goal.location))
 
