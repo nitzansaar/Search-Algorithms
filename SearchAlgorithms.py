@@ -113,14 +113,9 @@ def a_star(startState, heuristic_func):
             for s in successors:
                     visited_list[s] = True
             for s in successors:
-                # h_cost = heuristic_func(current_state)
+                # h_cost = heuristic_func(s.location)
                 # search_queue.put((cost + h_cost, s))
                 search_queue.put((cost + SLD(current_state.location), s))
-
-
-
-
-
 
 ## simulate uniform cost
 def uniform_cost_search(startState, use_visited_list=True):
@@ -178,9 +173,6 @@ if __name__ == "__main__" :
     depth_limited_search(start, True)
     iterative_deepening_search(start)
     uniform_cost_search(start, True)
-    # s = MarsState()
-    # s.read_mars_graph("MarsMap")
     start = MarsState('8,8', s.mars_graph)
-    # goal = MarsState('1,1', s.mars_graph)
     a_star(start,SLD(start.location))
 
