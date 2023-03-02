@@ -10,7 +10,9 @@ from HopperState import *
 
 from queue import PriorityQueue
 
-
+s = MarsState()
+s.read_mars_graph("MarsMap")
+goal = MarsState('1,1', s.mars_graph)
 def breadth_first_search(startState, use_closed_list=True) :
     search_queue = deque()
     closed_list = {}
@@ -104,16 +106,16 @@ def a_star(startState, heuristic_func):
             print("Goal found")
             return
         else:
-            # filters out successors that have already been visited
             successors = current_state.successors()
+            # filters out successors that have already been visited
             successors = [item for item in successors
                             if item not in visited_list]
             for s in successors:
                     visited_list[s] = True
             for s in successors:
-                # h_cost = heuristic_func(current_state.location, s.location)
+                # h_cost = heuristic_func(current_state)
                 # search_queue.put((cost + h_cost, s))
-                search_queue.put((cost + SLD(current_state.location, s.location), s))
+                search_queue.put((cost + SLD(current_state.location), s))
 
 
 
@@ -148,9 +150,9 @@ def h1(s) :
     return 0
 
 ## implement this for the Mars rover.
-def SLD(self, goal) :
+def SLD(self) :
     y1, x1 = map(int, self.split(","))
-    y2, x2 = map(int, goal.split(","))
+    y2, x2 = map(int, goal.location.split(","))
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
 
@@ -176,9 +178,9 @@ if __name__ == "__main__" :
     depth_limited_search(start, True)
     iterative_deepening_search(start)
     uniform_cost_search(start, True)
-    s = MarsState()
-    s.read_mars_graph("MarsMap")
+    # s = MarsState()
+    # s.read_mars_graph("MarsMap")
     start = MarsState('8,8', s.mars_graph)
-    goal = MarsState('1,1', s.mars_graph)
-    a_star(start,SLD(start.location, goal.location))
+    # goal = MarsState('1,1', s.mars_graph)
+    a_star(start,SLD(start.location))
 
