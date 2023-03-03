@@ -3,7 +3,7 @@ from ortools.sat.python import cp_model
 model = cp_model.CpModel()
 solver = cp_model.CpSolver()
 
-freq = {0 : 'f1', 1: 'f2', 2: 'f3'}
+freq = {0: 'f1', 1: 'f2', 2: 'f3'}
 
 Antenna1 = model.NewIntVar(0, 2, "Rover 1")
 Antenna2 = model.NewIntVar(0, 2, "Rover 2")
@@ -43,9 +43,3 @@ if status == cp_model.OPTIMAL or status == cp_model.FEASIBLE:
     print("A7: %s" % freq[solver.Value(Antenna7)])
     print("A8: %s" % freq[solver.Value(Antenna8)])
     print("A9: %s" % freq[solver.Value(Antenna9)])
-
-
-
-
-
-

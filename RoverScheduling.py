@@ -13,12 +13,12 @@ shifts = {}
 for n in all_rovers:
     for d in all_days:
         for s in all_shifts:
-            shifts[(n,d,s)] = model.NewBoolVar('shift_n%id%is%i' % (n, d, s))
+            shifts[(n, d, s)] = model.NewBoolVar('shift_n%id%is%i' % (n, d, s))
 
 shift2 = {}
 for n in all_rovers:
     for d in all_days:
-        shift2[(n,d)] = model.NewBoolVar('shift2_n%id%i' % (n, d))
+        shift2[(n, d)] = model.NewBoolVar('shift2_n%id%i' % (n, d))
 
 for d in all_days:
     for s in all_shifts:
@@ -44,15 +44,13 @@ for n in all_rovers:
 for n in all_rovers:
     for d in all_days[:-1]:
         for s in all_shifts:
-            model.Add(shifts[(n, d, s)] + shifts[(n, d+1, 0)] <= 1)
-
-
-
+            model.Add(shifts[(n, d, s)] + shifts[(n, d + 1, 0)] <= 1)
 
 solver = cp_model.CpSolver()
 solver.parameters.linearization_level = 0
 # Enumerate all solutions.
 solver.parameters.enumerate_all_solutions = True
+
 
 class NursesPartialSolutionPrinter(cp_model.CpSolverSolutionCallback):
     """Print intermediate solutions."""
@@ -85,6 +83,7 @@ class NursesPartialSolutionPrinter(cp_model.CpSolverSolutionCallback):
 
     def solution_count(self):
         return self._solution_count
+
 
 # Display the first five solutions.
 solution_limit = 1

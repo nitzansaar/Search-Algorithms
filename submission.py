@@ -5,7 +5,7 @@ from unittest import TestCase
 from HopperState import HopperState
 from MarsState import MarsState
 from SearchAlgorithms import depth_limited_search, a_star, SLD, iterative_deepening_search, depth_first_search, \
-    uniform_cost_search
+    uniform_cost_search, h1
 
 
 class Test(TestCase):
@@ -18,6 +18,7 @@ class Test(TestCase):
         print('depth limited search')
         startState = HopperState(0, 0, 0)
         depth_limited_search(startState)
+
     def test_iterative_deepening_search(self):
         print('iterative deepening search')
         startState = HopperState(0, 0, 0)
@@ -26,22 +27,22 @@ class Test(TestCase):
     def test_sld(self):
         print('SLD heuristic')
         s = MarsState()
-        s.read_mars_graph("MarsMap")
-        s2 = '3,3'
-        sld = SLD(s2)
-        print(sld)
+        start = MarsState('8,8', s.mars_graph)
+        print(SLD(start))
 
     def test_a_star(self):
         print('A*')
         s = MarsState()
         s.read_mars_graph("MarsMap")
         start = MarsState('8,8', s.mars_graph)
-        a_star(start,SLD('8,8'))
+        a_star(start, SLD) # 66 states
+        a_star(start, h1) # 128 states
 
     def test_uniform_cost_search(self):
         startState = HopperState(0, 0, 0)
         print('uniform cost search')
         uniform_cost_search(startState, True)
+
 
 class TestHopperState(TestCase):
     def test_eq(self):
@@ -55,7 +56,6 @@ class TestHopperState(TestCase):
         assert state1 == state0
         assert state2 != state3
         assert state2 == state2
-
 
     def test_lt(self):
         state1 = HopperState(h1=1, h2=2, h3=3, prev_state=None, prev_action=None)
@@ -72,6 +72,7 @@ class TestHopperState(TestCase):
         assert hash(state3) == hash(state3)
         assert hash(state1) != hash(state3)
         assert hash(state1) == hash(state2)
+
     def test_successors(self):
         initial_state = HopperState(h1=1, h2=2, h3=0)
         successors = initial_state.successors()
