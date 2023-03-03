@@ -36,13 +36,13 @@ class HopperState(State) :
                (self.hopper1, self.hopper2, self.hopper3)
 
     def is_goal(self):
-        return self.hopper1 == 5 and \
-               self.hopper2 == 0 and\
+        return self.hopper1 == 4 and \
+               self.hopper2 == 4 and\
                self.hopper3 == 0
 
     def print_solution(self):
         ptr = self
-        print(ptr)
+        # print(ptr)
         moves = 0
         while ptr :
             # print(ptr.prev_action)

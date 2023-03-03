@@ -15,11 +15,6 @@ for n in all_rovers:
         for s in all_shifts:
             shifts[(n, d, s)] = model.NewBoolVar('shift_n%id%is%i' % (n, d, s))
 
-shift2 = {}
-for n in all_rovers:
-    for d in all_days:
-        shift2[(n, d)] = model.NewBoolVar('shift2_n%id%i' % (n, d))
-
 for d in all_days:
     for s in all_shifts:
         model.AddExactlyOne(shifts[(n, d, s)] for n in all_rovers)
@@ -52,7 +47,7 @@ solver.parameters.linearization_level = 0
 solver.parameters.enumerate_all_solutions = True
 
 
-class NursesPartialSolutionPrinter(cp_model.CpSolverSolutionCallback):
+class RoversPartialSolutionPrinter(cp_model.CpSolverSolutionCallback):
     """Print intermediate solutions."""
 
     def __init__(self, shifts, num_rovers, num_days, num_shifts, limit):
@@ -85,9 +80,8 @@ class NursesPartialSolutionPrinter(cp_model.CpSolverSolutionCallback):
         return self._solution_count
 
 
-# Display the first five solutions.
 solution_limit = 1
-solution_printer = NursesPartialSolutionPrinter(shifts, num_rovers,
+solution_printer = RoversPartialSolutionPrinter(shifts, num_rovers,
                                                 num_days, num_shifts,
                                                 solution_limit)
 

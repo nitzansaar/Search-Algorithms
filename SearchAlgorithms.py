@@ -1,3 +1,4 @@
+# Author: Nitzan Saar
 import math
 from collections import deque
 
@@ -109,7 +110,6 @@ def a_star(startState, heuristic_func, use_visited_list=True):
         if current_state.is_goal():
             print("Goal found")
             current_state.print_solution()
-            # print("Moves: " + str(moves))
             return True
         else:
             successors = current_state.successors()
@@ -137,7 +137,7 @@ def uniform_cost_search(startState, use_visited_list=True):
         if next_state.is_goal():
             print("Goal found")
             next_state.print_solution()
-            return
+            return True
         else:
             successors = next_state.successors()
             if use_visited_list:
@@ -148,6 +148,8 @@ def uniform_cost_search(startState, use_visited_list=True):
             for s in successors:
                 # print(s.cost)
                 search_queue.put((cost + s.cost, s))
+    print('Goal not found :(')
+    return False
 
 
 def h1(s):
@@ -176,11 +178,17 @@ if __name__ == "__main__":
     # start = RomaniaState('Arad',g)
     # iterative_deepening_search(start)
     start = HopperState(0,0,0)
+    print('BFS')
     breadth_first_search(start, True)
+    print('DFS')
     depth_first_search(start, True)
+    print('DLS')
     depth_limited_search(start, True)
+    print('IDS')
     iterative_deepening_search(start)
     start = MarsState('8,8', s.mars_graph)
+    print('UCS')
     uniform_cost_search(start, True)
+    print('A*')
     a_star(start, SLD)
-    a_star(start, h1)
+    # a_star(start, h1)
