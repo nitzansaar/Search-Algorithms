@@ -54,8 +54,6 @@ class HopperState(State) :
         print("Number of moves: %i" % moves)
         HopperState.counter = 0
 
-    ## you do this.
-    # maybe try to reduce this and make more concise
     def successors(self):
         successors = []
         ## dump out hopper 1
@@ -83,7 +81,7 @@ class HopperState(State) :
         ## pour from 1 to 3
         if (self.hopper1 > 0 and self.hopper2 < 3):
             amount = min(self.hopper1, 3 - self.hopper3)
-            successors.append(HopperState(self.hopper1 - amount, self.hopper2, self.hopper3 + amount, self, "pour13"))
+            successors.append(HopperState(self.hopper1 - amount, self.hopper2, self.hopper3 + amount, self, "pour 1 to 3"))
         ## pour from 2 to 1
         if (self.hopper1 < 8 and self.hopper2 > 0):
             amount = min(self.hopper2, 8 - self.hopper1)
