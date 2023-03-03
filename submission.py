@@ -35,13 +35,15 @@ class Test(TestCase):
         s = MarsState()
         s.read_mars_graph("MarsMap")
         start = MarsState('8,8', s.mars_graph)
-        a_star(start, SLD) # 66 states
-        a_star(start, h1) # 128 states
+        a_star(start, SLD)
+        a_star(start, h1)
 
     def test_uniform_cost_search(self):
-        startState = HopperState(0, 0, 0)
+        s = MarsState()
+        s.read_mars_graph("MarsMap")
+        start = MarsState('8,8', s.mars_graph)
         print('uniform cost search')
-        uniform_cost_search(startState, True)
+        uniform_cost_search(start, True)
 
 
 class TestHopperState(TestCase):

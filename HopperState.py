@@ -51,6 +51,7 @@ class HopperState(State) :
             moves += 1
         print("Number of states: %i" % HopperState.counter)
         print("Number of moves: %i" % moves)
+        HopperState.counter = 0
 
     ## you do this.
     # maybe try to reduce this and make more concise

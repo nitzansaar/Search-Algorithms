@@ -33,11 +33,15 @@ class MarsState(State):
     ## print in reverse
     def print_solution(self):
         ptr = self
-        print(ptr)
+        # print(ptr)
+        moves = 0
         while ptr:
-            print(ptr.prev_state)
+            # print(ptr.prev_state)
             ptr = ptr.prev_state
+            moves += 1
         print("Number of states: %i" % MarsState.counter)
+        print("Number of moves: %i" % moves)
+        MarsState.counter = 0
 
     def successors(self):
         edges = self.mars_graph.get_edges(self.location)

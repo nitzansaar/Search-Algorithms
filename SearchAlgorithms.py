@@ -97,16 +97,18 @@ def iterative_deepening_search(startState):
     return goalFound
 
 
-def a_star(startState, heuristic_func):
+def a_star(startState, heuristic_func, use_visited_list=True):
     search_queue = PriorityQueue()
     visited_list = {}
     search_queue.put((0, startState))
     moves = 0
+    if use_visited_list:
+        visited_list[startState] = True
     while not search_queue.empty():
         cost, current_state = search_queue.get()
         if current_state.is_goal():
-            current_state.print_solution()
             print("Goal found")
+            current_state.print_solution()
             # print("Moves: " + str(moves))
             return True
         else:
@@ -133,8 +135,8 @@ def uniform_cost_search(startState, use_visited_list=True):
     while not search_queue.empty():
         cost, next_state = search_queue.get()
         if next_state.is_goal():
-            next_state.print_solution()
             print("Goal found")
+            next_state.print_solution()
             return
         else:
             successors = next_state.successors()
@@ -181,3 +183,4 @@ if __name__ == "__main__":
     start = MarsState('8,8', s.mars_graph)
     uniform_cost_search(start, True)
     a_star(start, SLD)
+    a_star(start, h1)
