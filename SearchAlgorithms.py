@@ -94,7 +94,10 @@ def iterative_deepening_search(startState):
     # print(limit)
     return goalFound
 
-# ***how to use the heuristic func as parameter***
+def SLD(self) :
+    y1, x1 = map(int, self.location.split(","))
+    y2, x2 = map(int, goal.location.split(","))
+    return int(math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2))
 def a_star(startState, heuristic_func):
     search_queue = PriorityQueue()
     visited_list = {}
@@ -104,7 +107,7 @@ def a_star(startState, heuristic_func):
         if current_state.is_goal():
             current_state.print_solution()
             print("Goal found")
-            return
+            return True
         else:
             successors = current_state.successors()
             # filters out successors that have already been visited
@@ -113,11 +116,11 @@ def a_star(startState, heuristic_func):
             for s in successors:
                     visited_list[s] = True
             for s in successors:
-                # h_cost = heuristic_func(s.location)
-                # search_queue.put((cost + h_cost, s))
-                search_queue.put((cost + SLD(current_state.location), s))
+                h_cost = heuristic_func(current_state)
+                search_queue.put((cost + h_cost, s))
+    print('Goal not found :(')
+    return False
 
-## simulate uniform cost
 def uniform_cost_search(startState, use_visited_list=True):
     search_queue = PriorityQueue()
     visited_list = {}
@@ -138,17 +141,12 @@ def uniform_cost_search(startState, use_visited_list=True):
                 for s in successors:
                     visited_list[s] = True
             for s in successors:
+                print(s.cost)
                 search_queue.put((cost + s.cost, s))
 
 
 def h1(s) :
     return 0
-
-## implement this for the Mars rover.
-def SLD(self) :
-    y1, x1 = map(int, self.split(","))
-    y2, x2 = map(int, goal.location.split(","))
-    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
 
 ## SLD to Bucharest
@@ -167,12 +165,12 @@ if __name__ == "__main__" :
     # g = make_romania_graph()
     # start = RomaniaState('Arad',g)
     # iterative_deepening_search(start)
-    start = HopperState(0,0,0)
+    # start = HopperState(0,0,0)
     # breadth_first_search(start, True)
     # depth_first_search(start, True)
     # depth_limited_search(start, True)
     # iterative_deepening_search(start)
-    uniform_cost_search(start, True)
-    # start = MarsState('8,8', s.mars_graph)
-    # a_star(start,SLD(start.location))
+    start = MarsState('8,8', s.mars_graph)
+    # uniform_cost_search(start, True)
+    a_star(start, SLD)
 

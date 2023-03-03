@@ -36,7 +36,7 @@ class Test(TestCase):
         s = MarsState()
         s.read_mars_graph("MarsMap")
         start = MarsState('8,8', s.mars_graph)
-        a_star(start,SLD(start.location))
+        a_star(start,SLD('8,8'))
 
     def test_uniform_cost_search(self):
         startState = HopperState(0, 0, 0)
