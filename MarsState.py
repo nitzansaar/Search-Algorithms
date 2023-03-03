@@ -1,3 +1,4 @@
+# Author: Nitzan Saar
 from Graph import Graph, Edge, Node
 from State import State
 

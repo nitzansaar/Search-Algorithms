@@ -1,3 +1,4 @@
+# Author: Nitzan Saar
 from ortools.sat.python import cp_model
 
 num_rovers = 5

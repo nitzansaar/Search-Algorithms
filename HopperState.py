@@ -1,3 +1,4 @@
+# Author: Nitzan Saar
 from State import State
 
 hopper1max = 8

@@ -102,7 +102,6 @@ def a_star(startState, heuristic_func, use_visited_list=True):
     search_queue = PriorityQueue()
     visited_list = {}
     search_queue.put((0, startState))
-    moves = 0
     if use_visited_list:
         visited_list[startState] = True
     while not search_queue.empty():
@@ -113,7 +112,6 @@ def a_star(startState, heuristic_func, use_visited_list=True):
             return True
         else:
             successors = current_state.successors()
-            # filters out successors that have already been visited
             successors = [item for item in successors
                           if item not in visited_list]
             for s in successors:
@@ -121,7 +119,6 @@ def a_star(startState, heuristic_func, use_visited_list=True):
             for s in successors:
                 h_cost = heuristic_func(current_state)
                 search_queue.put((cost + h_cost, s))
-        moves += 1
     print('Goal not found :(')
     return False
 
@@ -140,14 +137,16 @@ def uniform_cost_search(startState, use_visited_list=True):
             return True
         else:
             successors = next_state.successors()
-            if use_visited_list:
-                successors = [item for item in successors
-                              if item not in visited_list]
-                for s in successors:
-                    visited_list[s] = True
+
+            successors = [item for item in successors
+                          if item not in visited_list]
             for s in successors:
-                # print(s.cost)
-                search_queue.put((cost + s.cost, s))
+                visited_list[s] = True
+        for s in successors:
+            # print(s.cost)
+            search_queue.put((cost + s.cost, s))
+
+
     print('Goal not found :(')
     return False
 
@@ -177,7 +176,7 @@ if __name__ == "__main__":
     # g = make_romania_graph()
     # start = RomaniaState('Arad',g)
     # iterative_deepening_search(start)
-    start = HopperState(0,0,0)
+    start = HopperState(0, 0, 0)
     print('BFS')
     breadth_first_search(start, True)
     print('DFS')
