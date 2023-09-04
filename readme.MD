@@ -1,152 +1,84 @@
+# Search Algorithms and State Representations
 
-### CS 462 Assignment 2: Search
+This repository contains a collection of Python classes and functions that implement various search algorithms and state representations for solving problems in different domains. These algorithms are commonly used in artificial intelligence and computer science to explore state spaces and find solutions to complex problems.
 
-### due: Monday, 2/27, start of class.
+## Contents
 
-#### 100 points.
+- [Search Algorithms](#search-algorithms)
+- [State Classes](#state-classes)
+- [Heuristic Functions](#heuristic-functions)
+- [Test Cases](#test-cases)
+- [What I Learned](#what-i-learned)
 
-Note: please make sure that your name is someplace in your assignment! This is especially true if it's not obvious from your GitHub handle.
+## Search Algorithms
 
-To turn in: please submit everything to your github repo. For the written portion of the assignment, please add a document to your repository, as PDF, containing the answers to these questions.
-Also, please add a file to your repo called submission.py - this should call each of your tests and run your code.
+The `SearchAlgorithms.py` module provides implementations of several search algorithms:
 
-In this assignment, you'll answer a set of written questions about search, extend some existing 
-code to implement classic search algorithms, and use an existing toolkit [(OR-Tools)](https://developers.google.com/optimization) to solve problems in a 
-simplified Mars rover environment.
+- **Breadth-First Search (BFS):** Explores the state space level by level.
+- **Depth-First Search (DFS):** Explores the state space depth-first.
+- **Depth-Limited Search (DLS):** DFS with a depth limit.
+- **Iterative Deepening Search (IDS):** Repeatedly applies DLS with increasing depth limits.
+- **Uniform Cost Search (UCS):** Explores paths with the lowest cumulative cost.
+- **A* Search:** Uses a combination of actual cost and heuristic estimate to guide the search.
 
-I've also included some other sample environments, specifically the Vacuum and Romania environments, to provide examples for you.
+## State Classes
 
-Question 1 (20 points): For each of the following algorithms, please indicate its time and space requirements, and whether it is complete and optimal, it's 
+This repository includes various state classes that define problem domains and states:
 
-| Algorithm  | Time Complexity  | Space Complexity  | Complete?  | Optimal?  |
-|---|---|---|---|---|
-| BFS  |   |   |   |   |
-| UCS  |   |   |   |   |
-| DFS   |   |   |   |   |
-| DLS  |   |   |   |   |
-| IDS |    |   |   |   |
-|A*  |    |    |   |   |
+- `VacuumState`: Represents the state of a vacuum cleaner moving between two rooms.
+- `RomaniaState`: Represents states and actions in a navigation problem between cities in Romania.
+- `MarsState`: Represents states and actions for navigation on the surface of Mars.
+- `HopperState`: Represents states and actions for a hopping creature moving between different heights.
 
+Each state class inherits from the `State` class and provides methods for defining actions, successors, and heuristics.
 
+### `VacuumState`:
 
+Represents the state of a vacuum cleaner moving between two rooms. The class includes methods for actions, successors, and heuristics specific to this problem domain.
 
-Question 2: Our Mars Rover needs to collect some soil samples. It has three hoppers to
-hold these samples. Unfortunately, during the landing, the markings on the hoppers were burned off,
-so our agent only knows how much each hopper holds. (careful observers may note the 
-resemblance to the Water Jug problem.)
+### `RomaniaState`:
 
-Luckily, our agent has access to some search algorithms that it can use. Using VacuumState as an example, you will need to complete the implementation of the HopperState 
-class so that our rover can solve the problem.
+Represents states and actions in a navigation problem between cities in Romania. Provides methods for defining actions and successors, as well as heuristic functions for A* search.
 
-a) (5 points) To begin, we need to implement the __eq__, __hash__, and __lt__ methods in the HopperState class in order for the closed list and 
-priority queue to function correctly. (You should use cost as the way to compare states. Implement unit tests in a file called
-test_HopperState.py that allow you to determine that these methods are working correctly.
+### `MarsState`:
 
-b) (10 points) Next, implement successors. For any state, our robot has the following actions:
-- It can fill any of the three hoppers. This will result in them being completely full.
-- It can dump out any of the three hoppers. This will result in that hopper being empty.
-- It can pour soil from hopper A to hopper B. This will have one of two outcomes:
-  1. Hopper A is empty, and hopper B contains all the soil from both hoppers.
-  2. Hopper B is full, and some leftover soil remains in hopper A.
+Represents states and actions for navigation on the surface of Mars. Provides methods for reading graph data and defining actions and successors.
 
-successors should return a list of successor states. You do not need to generate states that result in no change.
-(for example, dumping out an empty bucket.)
-Implement a unit test in test_HopperState that allows you to confirm that successor is working correctly.
-Note: good coding practices are encouraged here. If you find yourself creating complex loops or nested if/else's, refactor.
+### `HopperState`:
 
+Represents states and actions for a hopping creature moving between different heights. Includes methods for defining actions, successors, and heuristics.
 
-c) (5 points) Now let's try it out on the given algorithms. I've provided BFS and DFS implementations for you. 
-Run this problem with the following three goals using both BFS and DFS, assuming the hoppers start empty. (Don't do the hard one until you're sure the closed list is working correctly.)
-1. Easy: [5 0 0]
-2. Medium: [4 0 0]
-3. Hard: [4 4 0]
+## Heuristic Functions
 
-Adapt the code to print out the number of states generated at the end.
+The `SearchAlgorithms.py` module also includes heuristic functions used in the A* search algorithm:
 
-d) (10 points) Last, note that DFS has a limit parameter that is not used. Extend DFS to only add new nodes to the search queue if they have cost < limit. 
-This will implement DLS for us. Then, write a method called IterativeDeepeningSearch - this should just be a loop that 
-calls DLS with increasing limits until the solution is found.
+- `SLD`: Straight Line Distance heuristic for navigation problems.
+- `RomaniaSLD`: Heuristic specific to the Romania navigation problem.
 
-e) (5 points) Please include a table that shows how many states were generated for each of the problems (Easy, Medium, Hard) for BFS, DFS, DLS, and IDS.
+These heuristics estimate the cost from a given state to the goal state, guiding the search towards efficient solutions.
 
+## Test Cases
 
-Question 3: For this problem, we will need for our rover to find its way from the sample site back to the charger.
-Fortunately, we have a map that we can use to find our way. There's a picture of it in the marsmap.docx file; 
-the red cells are areas we cannot travel in.
+The repository includes test cases to ensure the correctness of the implemented algorithms and state representations. The `TestSearchAlgorithms.py` and `TestHopperState.py` modules contain unit tests for search algorithms and the `HopperState` class, respectively.
 
-This data is also captured in the MarsMap file.
+## What I Learned
 
-You will need to:
+Search Algorithms: I deepened my understanding of various search algorithms commonly used in artificial intelligence and problem-solving. Implementing algorithms like Breadth-First Search, Depth-First Search, A* Search, and others allowed me to grasp their underlying principles and explore their strengths and weaknesses in different scenarios.
 
-a) (5 points) Complete the read_mars_graph() method so that you can create a graph. 
-I've provided a Graph class for you; if you want to modify it, feel free.
-You may want to look at RomaniaGraph to get some ideas.
+State Representation: I learned how to create effective state representations for various problem domains. Designing classes like VacuumState, RomaniaState, MarsState, and HopperState helped me translate real-world scenarios into actionable code. This experience improved my ability to model complex systems and interactions.
 
-b) (15 points) In SearchAlgorithms.py, complete the a_star function. 
-You will need to implement a straight-line distance heuristic. 
-This should compute SLD(p1, p2) = sqrt((p1.x - p2.x)^2 + (p1.y - p2.y)^2))
+Heuristic Functions: Developing heuristic functions such as the Straight Line Distance (SLD) heuristic deepened my understanding of how to guide search algorithms efficiently. These heuristics provided insight into how algorithms can leverage domain-specific knowledge to prioritize promising paths and improve search efficiency.
 
-SLD should be a separate function that is provided to a_star, *NOT* something encoded within the
-algorithm. You should be able to pass in a different heuristic function, such as h1, which always returns 0,
-without changing your code.
+Unit Testing: Writing comprehensive unit tests for the implemented classes and algorithms enhanced my skills in ensuring code correctness. It taught me to anticipate edge cases, identify bugs, and maintain code quality throughout iterations.
 
-c) (5 points) Run both A* and uniform cost search (i.e. using h1: h=0 for all states) on the MarsMap and count the number of states generated.
-Add this to your results.
+Code Organization: Structuring the project and modularizing code into separate classes and functions improved code readability and maintainability. I learned how to create clean and organized codebases that are easy to understand and extend.
 
-Question 4.
+## Usage
 
-For this question, you'll be using the [(OR-Tools)](https://developers.google.com/optimization) toolkit to help out our Mars rover.
-I've provided some sample code for you to use as a starting point, as well as code to solve
-the Bay Area map coloring problem.
+To use the provided code, follow these steps:
 
-a. (15 points) Our rover needs to set up nine wireless antennae so that its sensors can collect data and send it back. 
-Antennae that are close to each other need to operate on different frequencies so that they don't interfere with each other.
+1. Clone or download this repository to your local machine.
+2. Import the necessary classes and functions into your project.
+3. Create instances of the state classes and apply the desired search algorithms to solve specific problems.
 
-Our rover has three possible frequencies (f1, f2 and f3) that it can assign to an antenna.
-
-It knows that:
-- Antenna 1 is adjacent to 2,3 and 4.
-- Antenna 2 is adjacent to 1, 3, 5, and 6
-- Antenna 3 is adjacent to 1, 2, 6, and 9
-- Antenna 4 is adjacent to 1, 2, and 5.
-- Antenna 5 is adjacent to 2 and 4
-- Antenna 6 is adjacent to 2, 7 and 8
-- Antenna 7 is adjacent to 6 and 8
-- Antenna 8 is adjacent to 7 and 9
-- Antenna 9 is adjacent to 3 and 8
-
-(observant readers will note that this is a variant of the map coloring problem.)
-
-Using the map coloring code as an example, use OR-tools to find an assignment of frequencies to antennae that maintains the constraint that
-no adjacent antennae share a frequency.
-
-b. (5 points) Rover scheduling. For this problem, we'll be using OR-tools to solve a rover scheduling problem. You will want to use the nurse scheduling problem as an example.
-
-Let's suppose that we have five rovers, and we need to create a schedule for when they operate. We have the following setup:
-- There are seven days in the week.
-- There are three time blocks in each day. (morning, noon, night)
-- For each time block, we want exactly one rover to be scheduled.
-- A rover cannot run more than one shift in a day.
-- A rover cannot do a night shift followed by a morning shift.
-- All the rovers must have at least three slots.
-
-Using the nurse scheduler as an example, use OR-tools to find a schedule for our rovers.
-
-Question 5: (grad students only).
-
-A problem that computer scientists and biologists have been working on for almost 50 years is the (protein folding)[https://www.youtube.com/watch?v=KpedmJdrTpY] problem.
-
-It's a huge combinatorial search problem that was traditionally tackled using the search techniques we've 
-been studying. 
-
-Recently, researchers at DeepMind have developed a new approach to this problem, called (AlphaFold)[https://www.deepmind.com/research/highlighted-research/alphafold], which 
-employs machine learning to attack the problem differently. In a nutshell, a neural network is used to learn a 
-highly accurate evaluation function. This greatly reduces the size of the space that needs to be searched, allowing 
-AlphaFold to identify almost any protein structure. 
-
-Please take a look at the site linked above, watch the videos and read their descriptions, and prepare a short (2-3 paragraph)
-response that answers the following questions:
-- Why is protein folding so hard?
-- What is CASP?
-- How does AlphaFold enable scientific discovery? What's an example of a problem it's
-been used to solve?
+Example usage can be found in the code comments and the provided sample script.
